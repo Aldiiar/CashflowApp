@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обновить запись</title>
+    <link rel="stylesheet" href="{% static 'css/styles_add.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Обновить запись</h2>
+        <form action="" method="post" id="update-form">
+            {% csrf_token %}
+            <input type="hidden" id="cashflow-id" name="id" value="{{ cashflow.id }}">
+            <div class="form-group">
+                <label for="status">Статус:</label>
+                <select id="status" name="status">
+                    <option value="">Выберите статус</option>
+                    {% for s in statuses %}
+                        <option value="{{ s.id }}" {% if s.id == cashflow.status.id %}selected{% endif %}>{{ s.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="type">Тип:</label>
+                <select id="type" name="type">
+                    <option value="">Выберите тип</option>
+                    {% for t in types %}
+                        <option value="{{ t.id }}" {% if t.id == cashflow.type.id %}selected{% endif %}>{{ t.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Категория:</label>
+                <select id="category" name="category">
+                    <option value="">Выберите категорию</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id == cashflow.category.id %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="subcategory">Подкатегория:</label>
+                <select id="subcategory" name="subcategory">
+                    <option value="">Выберите подкатегорию</option>
+                    {% for subcategory in subcategories %}
+                        <option value="{{ subcategory.id }}" {% if subcategory.id == cashflow.subcategory.id %}selected{% endif %}>{{ subcategory.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Сумма:</label>
+                <input type="number" id="amount" name="amount" value="{{ cashflow.amount }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Описание:</label>
+                <textarea id="comment" name="comment">{{ cashflow.comment }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="custom_date">Дата:</label>
+                <input type="date" id="custom_date" name="custom_date" value="{{ cashflow.custom_date|default:cashflow.created_at }}" required>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-update">Обновить данные</button>
+                <button type="button" id="delete-button" class="btn btn-delete">Удалить</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'js/script_update.js' %}"></script>
+</body>
+</html>

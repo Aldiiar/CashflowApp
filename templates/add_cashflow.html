@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить запись</title>
+    <link rel="stylesheet" href="{% static 'css/styles_add.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Добавить запись</h2>
+        <form action="" method="post" id="add-form">
+            {% csrf_token %}
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" >{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="status">Статус:</label>
+                <select id="status" name="status">
+                    <option value="">Выберите статус</option>
+                    {% for s in statuses %}
+                        <option value="{{ s.id }}" {% if filters.status == s.id|stringformat:"s" %}selected{% endif %}>{{ s.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="type">Тип:</label>
+                <select id="type" name="type">
+                    <option value="">Выберите тип</option>
+                    {% for t in types %}
+                        <option value="{{ t.id }}" {% if filters.type == t.id|stringformat:"s" %}selected{% endif %}>{{ t.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Категория:</label>
+                <select id="category" name="category">
+                    <option value="">Выберите категорию</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id == filters.category|stringformat:"s" %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="subcategory">Подкатегория:</label>
+                <select id="subcategory" name="subcategory">
+                    <option value="">Выберите подкатегорию</option>
+                    {% for subcategory in subcategories %}
+                        <option value="{{ subcategory.id }}" {% if subcategory.id == filters.subcategory|stringformat:"s" %}selected{% endif %}>
+                            {{ subcategory.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Сумма:</label>
+                <input type="number" id="amount" name="amount" value="{{ filters.amount }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Описание:</label>
+                <textarea id="comment" name="comment">{{ filters.comment }}</textarea>
+            </div>
+
+            <button type="submit" class="button">Добавить запись</button>
+        </form>
+    </div>
+
+    <script src="{% static 'js/script_add.js' %}"></script>
+</body>
+</html>
